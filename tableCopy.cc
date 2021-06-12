@@ -40,7 +40,7 @@ bool checkTables(std::string table1, std::string table2)
         }
         else if(useCompressor == "zfp")
         {
-            if(abs(a1.data()[j] - a2.data()[j]) > stof(useAccuracy))
+            if(abs(a1.data()[j].real() - a2.data()[j].real()) > stof(useAccuracy) ||  abs(a1.data()[j].imag() - a2.data()[j].imag()) > stof(useAccuracy))
             {
                 cerr << "!!!! wrong data at " << j << ", read " << a2.data()[j] << ", should be " << a1.data()[j] << endl;
             }
