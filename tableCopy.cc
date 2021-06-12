@@ -9,7 +9,10 @@ using namespace std;
 std::string sparseColumnName = "map";
 
 //std::string useCompressor = "bzip2";
-std::string useCompressor = "blosc";
+//std::string useCompressor = "blosc";
+std::string useCompressor = "zfp";
+
+std::string useAccuracy = "0.01";
 
 bool checkTables(std::string table1, std::string table2)
 {
@@ -28,10 +31,19 @@ bool checkTables(std::string table1, std::string table2)
 
     for(size_t j=0; j<a1.nelements(); ++j)
     {
-        if(a1.data()[j] != a2.data()[j])
+        if(useCompressor == "bzip2" || useCompressor == "blosc")
         {
-            cerr << "wrong data at " << j << endl;
-            return false;
+            if(a1.data()[j] != a2.data()[j])
+            {
+                cerr << "!!!! wrong data at " << j << ", read " << a2.data()[j] << ", should be " << a1.data()[j] << endl;
+            }
+        }
+        else if(useCompressor == "zfp")
+        {
+            if(abs(a1.data()[j] - a2.data()[j]) > stof(useAccuracy))
+            {
+                cerr << "!!!! wrong data at " << j << ", read " << a2.data()[j] << ", should be " << a1.data()[j] << endl;
+            }
         }
     }
 
@@ -68,7 +80,7 @@ int main (int argc, const char* argv[])
         td.addColumn (ArrayColumnDesc<Complex>(sparseColumnName, mapColumn.shape(0), ColumnDesc::FixedShape));
         SetupNewTable newtab(fileOut, td, Table::New);
 
-        Adios2StMan a2stman(MPI_COMM_WORLD, "table", {{"Compressor",useCompressor}}, {});
+        Adios2StMan a2stman(MPI_COMM_WORLD, "table", {{"Compressor",useCompressor}, {"Accuracy",useAccuracy}}, {});
         newtab.bindAll(a2stman);
         Table tabOut(newtab);
         tabOut.addRow(tabIn.nrow());
