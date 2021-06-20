@@ -10,7 +10,8 @@ std::string sparseColumnName = "map";
 
 //std::string useCompressor = "bzip2";
 //std::string useCompressor = "blosc";
-std::string useCompressor = "zfp";
+//std::string useCompressor = "zfp";
+std::string useCompressor = "sz";
 
 std::string useAccuracy = "0.01";
 
@@ -38,7 +39,7 @@ bool checkTables(std::string table1, std::string table2)
                 cerr << "!!!! wrong data at " << j << ", read " << a2.data()[j] << ", should be " << a1.data()[j] << endl;
             }
         }
-        else if(useCompressor == "zfp")
+        else if(useCompressor == "zfp" || useCompressor == "sz")
         {
             if(abs(a1.data()[j].real() - a2.data()[j].real()) > stof(useAccuracy) ||  abs(a1.data()[j].imag() - a2.data()[j].imag()) > stof(useAccuracy))
             {
