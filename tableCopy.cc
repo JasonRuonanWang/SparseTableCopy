@@ -89,15 +89,29 @@ int main (int argc, const char* argv[])
         td.addColumn (ArrayColumnDesc<Complex>(sparseColumnName, mapColumn.shape(0), ColumnDesc::FixedShape));
         SetupNewTable newtab(fileOut, td, Table::New);
 
-        Adios2StMan a2stman(MPI_COMM_WORLD, "mhs", {{"Tiers","1"}}, {{{"Name","bp"}, {"Variable",sparseColumnName}, {"Operator",useCompressor}, {"Accuracy",useAccuracy}}});
-//        Adios2StMan a2stman(MPI_COMM_WORLD, "mhs", {{"Tiers","1"}}, {});
-//        Adios2StMan a2stman(MPI_COMM_WORLD);
+//        Adios2StMan a2stman;
+
+        Adios2StMan a2stman(
+                MPI_COMM_WORLD, // MPI communicator
+                "",             // ADIOS engine name, empty for default
+                {},             // ADIOS engine parameters, std::map<std::string, std::string>
+                {{}},           // ADIOS transport parameters, std::vector<std::map<std::string, std::string>>
+                {{              // ADIOS operator (compressor) parameters, std::vector<std::map<std::string, std::string>>
+                    {"Variable", sparseColumnName},
+                    {"Operator", useCompressor},
+                    {"Accuracy", useAccuracy}
+                }}
+                );
+
+
         newtab.bindAll(a2stman);
         Table tabOut(newtab);
         tabOut.addRow(tabIn.nrow());
         TableCopy::copySubTables(tabOut, tabIn);
         TableCopy::copyColumnData(tabIn, sparseColumnName, tabOut, sparseColumnName, false);
-    }
+        std::cout << "Finished copying table, start checking data now" << std::endl;
+
+    }   // make sure every destructor is called before opening tables for checking
 
     checkTables(fileIn, fileOut);
 
