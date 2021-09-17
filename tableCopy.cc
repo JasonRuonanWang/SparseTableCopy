@@ -9,9 +9,9 @@ using namespace std;
 std::string sparseColumnName = "map";
 
 //std::string useCompressor = "bzip2";
-std::string useCompressor = "blosc";
+//std::string useCompressor = "blosc";
 //std::string useCompressor = "zfp";
-//std::string useCompressor = "sz";
+std::string useCompressor = "sz";
 
 std::string useAccuracy = "0.01";
 
@@ -80,6 +80,10 @@ int main (int argc, const char* argv[])
     {
         fileIn = argv[1];
         fileOut = argv[2];
+    }
+    if(argc==4)
+    {
+        useCompressor = argv[3];
     }
 
     {
