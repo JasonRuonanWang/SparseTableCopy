@@ -113,7 +113,7 @@ int main (int argc, const char* argv[])
         tabOut.addRow(tabIn.nrow());
         TableCopy::copySubTables(tabOut, tabIn);
         TableCopy::copyColumnData(tabIn, sparseColumnName, tabOut, sparseColumnName, false);
-        std::cout << "Finished copying table, start checking data now" << std::endl;
+        std::cout << "Finished copying table using " << useCompressor << ", start checking data now. " << std::endl;
 
     }   // make sure every destructor is called before opening tables for checking
 
