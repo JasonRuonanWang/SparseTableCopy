@@ -55,13 +55,14 @@ bool checkTables(std::string table1, std::string table2)
         cerr << "total " << errorElements << " errors out of " << a1.nelements() << " elements"  << endl;
     }
 
-    cout << "============================== Input Table Structure ==============================" << endl;
+    cout << endl << endl;
+    cout << "============================== Input Table Structure =======================================" << endl;
     t1.showStructure(cout);
-    cout << "===================================================================================" << endl << endl;
+    cout << "============================================================================================" << endl;
 
-    cout << "============================== Output Table Structure =============================" << endl;
+    cout << "============================== Output Table Structure ====================================== using " << useCompressor << endl;
     t2.showStructure(cout);
-    cout << "===================================================================================" << endl << endl;
+    cout << "============================================================================================" << endl;
 
     return true;
 }
@@ -116,8 +117,6 @@ int main (int argc, const char* argv[])
     }   // make sure every destructor is called before opening tables for checking
 
     checkTables(fileIn, fileOut);
-
-    std::cout << "Finished copying table using " << useCompressor << ", and data was checked. " << std::endl;
 
     return 0;
 }
