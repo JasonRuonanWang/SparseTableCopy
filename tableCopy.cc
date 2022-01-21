@@ -36,9 +36,9 @@ bool checkTables(std::string table1, std::string table2)
                 ++errorElements;
             }
         }
-        else if(useCompressor == "zfp" || useCompressor == "sz")
+        else if(useCompressor == "zfp" || useCompressor == "sz" || useCompressor == "mgard")
         {
-            if(abs(a1.data()[j].real() - a2.data()[j].real()) > stof(useAccuracy) ||  abs(a1.data()[j].imag() - a2.data()[j].imag()) > stof(useAccuracy))
+            if((abs(a1.data()[j].real() - a2.data()[j].real()) > stof(useAccuracy) ||  abs(a1.data()[j].imag() - a2.data()[j].imag()) > stof(useAccuracy)) && errorElements < 10)
             {
                 cerr << "!!!! wrong data at " << j << ", read " << a2.data()[j] << ", should be " << a1.data()[j] << endl;
                 ++errorElements;
