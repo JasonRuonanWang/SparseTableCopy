@@ -36,7 +36,7 @@ bool checkTables(std::string table1, std::string table2)
                 ++errorElements;
             }
         }
-        else if(useCompressor == "zfp" || useCompressor == "sz" || useCompressor == "mgard")
+        else if(useCompressor == "zfp" || useCompressor == "sz")
         {
             if((abs(a1.data()[j].real() - a2.data()[j].real()) > stof(useAccuracy) ||  abs(a1.data()[j].imag() - a2.data()[j].imag()) > stof(useAccuracy)) && errorElements < 10)
             {
