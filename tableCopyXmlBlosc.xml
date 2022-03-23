@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<adios-config>
+
+    <operator name="MapBlosc" type="blosc">
+    </operator>
+
+    <io name="Adios2StMan">
+        <variable name="map">
+            <operation operator="MapBlosc">
+            </operation>
+        </variable>
+    </io>
+</adios-config>

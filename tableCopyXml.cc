@@ -5,7 +5,6 @@
 using namespace casacore;
 using namespace std;
 
-
 std::string sparseColumnName = "map";
 
 //std::string useCompressor = "bzip2";
@@ -60,7 +59,7 @@ bool checkTables(std::string table1, std::string table2)
     t1.showStructure(cout);
     cout << "============================================================================================" << endl;
 
-    cout << "============================== Output Table Structure ====================================== using " << useCompressor << endl;
+    cout << "============================== Output Table Structure ====================================== using ADIOS2 XML" << endl;
     t2.showStructure(cout);
     cout << "============================================================================================" << endl;
 
@@ -70,21 +69,18 @@ bool checkTables(std::string table1, std::string table2)
 
 int main (int argc, const char* argv[])
 {
-    string fileIn, fileOut;
+    string fileIn, fileOut, xmlFile;
 
-    if(argc<3)
+    if(argc<4)
     {
-        std::cout << "Please provide filenames for input and output table, e.g. run ./tableCopy input.table output.table" << std::endl;
+        std::cout << "Please provide filenames for input and output table, and xml configuration file, e.g. run ./tableCopyXml input.table output.table tableCopyXmlZfp.xml" << std::endl;
         return -1;
     }
     else
     {
         fileIn = argv[1];
         fileOut = argv[2];
-    }
-    if(argc==4)
-    {
-        useCompressor = argv[3];
+        xmlFile = argv[3];
     }
 
     {
@@ -94,20 +90,7 @@ int main (int argc, const char* argv[])
         td.addColumn (ArrayColumnDesc<Complex>(sparseColumnName, mapColumn.shape(0), ColumnDesc::FixedShape));
         SetupNewTable newtab(fileOut, td, Table::New);
 
-//        Adios2StMan a2stman;
-
-        Adios2StMan a2stman(
-                MPI_COMM_WORLD, // MPI communicator
-                "",             // ADIOS engine name, empty for default
-                {},             // ADIOS engine parameters, std::map<std::string, std::string>
-                {{}},           // ADIOS transport parameters, std::vector<std::map<std::string, std::string>>
-                {{              // ADIOS operator (compressor) parameters, std::vector<std::map<std::string, std::string>>
-                    {"Variable", sparseColumnName},
-                    {"Operator", useCompressor},
-                    {"Accuracy", useAccuracy}
-                }}
-                );
-
+        Adios2StMan a2stman(xmlFile, MPI_COMM_WORLD);
 
         newtab.bindAll(a2stman);
         Table tabOut(newtab);

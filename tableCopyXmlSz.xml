@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<adios-config>
+
+    <operator name="MapSz" type="sz">
+    </operator>
+
+    <io name="Adios2StMan">
+        <variable name="map">
+            <operation operator="MapSz">
+                <parameter key="accuracy" value="0.01"/>
+            </operation>
+        </variable>
+    </io>
+</adios-config>

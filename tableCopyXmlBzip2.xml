@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<adios-config>
+
+    <operator name="MapBzip2" type="bzip2">
+    </operator>
+
+    <io name="Adios2StMan">
+        <variable name="map">
+            <operation operator="MapBzip2">
+            </operation>
+        </variable>
+    </io>
+</adios-config>
